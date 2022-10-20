@@ -462,11 +462,36 @@ ann@ann:~$
 
 \10. Замечания автора по существу работы:
 
-
+ann@ann:~$ ssh ann1@192.168.128.3
+Welcome to Ubuntu 22.04.1 LTS (GNU/Linux 5.15.0-48-generic aarch64)
+ • Documentation: https://help.ubuntu.com
+ • Management: https://landscape.canonical.com
+ • Support: https://ubuntu.com/advantage
+System information as of Сб 08 окт 2022 09:04:03 UTC
+System load: 0.0 Processes: 119
+Usage of /: 27.4% of 9.75GB Users logged in: 1
+Memory usage: 5% IPv4 address for enp0s6: 192.168.128.3
+Swap usage: 0%
+40 updates can be applied immediately.
+To see these additional updates run: apt list --upgradable
+Failed to connect to https://changelogs.ubuntu.com/meta-release-lts. Check your Internet connection or proxy settings
+Last login: Sat Oct 8 08:46:45 2022 from 192.168.128.2
+ann1@ann1:~$ iconv -t utf-8 > n1.txt
+a dd
+ann1@ann1:~$ cat 1.txt
+a dd
+ann1@ann1:~$ xxd 1.txt
+00000000: 7765 7274 3132 3320 6464 0a              wert123 dd.
+ann1@ann1:~$ iconv -t utf-16 > 2.txt
+wert123 dd
+ann1@ann1:~$ cat 2.txt
+??wert123 dd
+ann1ann1:~$ xxd 2.txt
+00000000: fffe 7700 6500 7200 7400 3100 3200 3300  ..w.e.r.t.1.2.3.
+00000010: 2000 6400 6400 0a00                       .d.d...
 
 \11. Выводы:
-
-Я узнала, что в OC UNIX можно удаленно подключаться к другим машинам. Я изучила команды, необходимые мне для манипуляций с файлами. Данные навыки мне пригодятся в будущем.
+Были изучены способы удаленного подключения к другой машине. Были изучены команды, необходимые для манипуляции с файлами.
 
 Недочёты при выполнении задания могут быть выполнены следующим образом:
 
