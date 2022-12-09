@@ -40,125 +40,90 @@
 [План работы, первоначальный текст программы в черновике ( можно на отдельном 
 
 листе) и тесты либо соображения по тестированию] 
+```
+#include <stdio.h>
+#include <ctype.h>
 
-1.Была изучена теория по целым числам в языке Си 
+typedef unsigned uint;
 
-2.Была написана программа (12.с) и туда запущены примеры из другого файла (1.txt) 3.Написание отчёта* 
+typedef enum {
+    OUTSIDE,
+    FIRST,
+    SECOND,
+    THIRD,
+    MIDDLE
+} State;
 
+void process(void);
+
+int main(void) {
+    process();
+    return 0;
+}
+
+void process(void) {
+    State state = OUTSIDE;
+    int temp[1] = { 0 };
+    for (int ch = getchar(); ch != EOF; ch = getchar()) {
+        switch (state) {
+            case OUTSIDE:
+                if (isdigit(ch)) {
+                    state = FIRST;
+                    temp[1] = ch;
+                } else
+                    putchar(ch);
+                break;
+            case FIRST:
+                if (isdigit(ch)) {
+                    temp[0] = ch;
+                    state = SECOND;
+                } else {
+                    state = OUTSIDE;
+                    putchar(temp[1]);
+                    putchar(ch);
+                }
+                break;
+            case SECOND:
+                if (isdigit(ch)) {
+                    state = THIRD;
+                    putchar(temp[1]);
+                    temp[1] = temp[0];
+                    temp[0] = ch;
+                } else {
+                    state = OUTSIDE;
+                    putchar(ch);
+                }
+                break;
+            case THIRD:
+                if (isdigit(ch)) {
+                    state = MIDDLE;
+                    temp[1] = temp[0];
+                    temp[0] = ch;
+                } else {
+                    state = OUTSIDE;
+                    putchar(temp[0]);
+                    putchar(ch);
+                }
+                break;
+            case MIDDLE:
+                if (isdigit(ch)) {
+                    putchar(temp[1]);
+                    temp[1] = temp[0];
+                    temp[0] = ch;
+                } else {
+                    state = OUTSIDE;
+                    putchar(temp[0]);
+                    putchar(ch);
+                }
+                break;
+        }
+    }
+}
+```
 8. **Распечатка протокола**  
 
 Подклеить  листинг  окончательного  варианта  программы  с  тестовыми  примерами, подписанный преподавателем. 
 ```
-ann@ann:~$ cat 12.c #include <stdio.h> #include <ctype.h> 
-
-typedef unsigned uint; 
-
-typedef enum {     OUTSIDE, 
-
-`    `FIRST, 
-
-`    `SECOND, 
-
-`    `THIRD, 
-
-`    `MIDDLE 
-
-} State; 
-
-void process(void); 
-
-int main(void) {     process(); 
-
-`    `return 0; 
-
-} 
-
-void process(void) { 
-
-`    `State state = OUTSIDE; 
-
-`    `int temp[1] = { 0 }; 
-
-`    `for (int ch = getchar(); ch != EOF; ch = getchar()) {         switch (state) { 
-
-`            `case OUTSIDE: 
-
-`                `if (isdigit(ch)) { 
-
-`                    `state = FIRST; 
-
-`                    `temp[1] = ch; 
-
-`                `} else 
-
-`                    `putchar(ch); 
-
-`                `break; 
-
-`            `case FIRST: 
-
-`                `if (isdigit(ch)) { 
-
-`                    `temp[0] = ch; 
-
-`                    `state = SECOND;                 } else { 
-
-`                    `state = OUTSIDE;                     putchar(temp[1]);                     putchar(ch); 
-
-`                `} 
-
-`                `break; 
-
-`            `case SECOND: 
-
-`                `if (isdigit(ch)) { 
-
-`                    `state = THIRD; 
-
-`                    `putchar(temp[1]);                     temp[1] = temp[0];                     temp[0] = ch; 
-
-`                `} else { 
-
-`                    `state = OUTSIDE;                     putchar(ch); 
-
-`                `} 
-
-`                `break; 
-
-`            `case THIRD: 
-
-`                `if (isdigit(ch)) { 
-
-`                    `state = MIDDLE;                     temp[1] = temp[0];                     temp[0] = ch; 
-
-`                `} else { 
-
-`                    `state = OUTSIDE;                     //putchar(temp[1]);                     putchar(temp[0]);                     putchar(ch); 
-
-`                `} 
-
-`                `break; 
-
-`            `case MIDDLE: 
-
-`                `if (isdigit(ch)) { 
-
-`                    `putchar(temp[1]);                     temp[1] = temp[0];                     temp[0] = ch; 
-
-`                `} else { 
-
-`                    `state = OUTSIDE;                     putchar(temp[0]);                     putchar(ch); 
-
-`                `} 
-
-`                `break; 
-
-`        `} 
-
-`    `} 
-
-} 
-
 ann@ann:~$ cat 1.txt 
 
 1234 12345654324567876543456 4 56 78 567895 
@@ -169,9 +134,7 @@ ann@ann:~$ cat 1.txt
 
 ann@ann:~$ gcc -std=c99 -Wall -pedantic 12.c ann@ann:~$ ./a.out < 1.txt 
 
-14 134565432456787654346 4   
-
-5785 
+14 134565432456787654346 4   5785 
 
 55  
 
