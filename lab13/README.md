@@ -89,8 +89,6 @@ bool process() {
                 else if (isalpha(ch)) {
                         word_set = word_set | char_to_set(ch);
                         continue; }
-                    
-                }
         }
     }
     return result;
