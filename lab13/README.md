@@ -66,7 +66,6 @@ bool check(uint n) {
     if (n > 0 && (n & (n - 1)) == 0)
         return true;
     return false; }
-   
 
 bool process() {
     State state = OUT;
@@ -75,8 +74,8 @@ bool process() {
     for (int ch = getchar(); ch != EOF; ch = getchar()) {
         switch (state) {
             case OUT:
-                if (isspace(ch) || ch == ',') continue;
-                
+                if (isspace(ch) || ch == ',') 
+                    continue;
                 else 
                     state = IN;
             case IN:
@@ -87,8 +86,7 @@ bool process() {
                     result = result || check(word_set);
                     continue; }
                     
-                else {
-                    if (isalpha(ch)) {
+                else if (isalpha(ch)) {
                         word_set = word_set | char_to_set(ch);
                         continue; }
                     
@@ -97,9 +95,6 @@ bool process() {
     }
     return result;
 }
-
-
-
 
 int main() {
     if (process()) 
