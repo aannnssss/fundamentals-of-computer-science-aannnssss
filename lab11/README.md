@@ -39,171 +39,102 @@
 7. **Сценарий выполнения работы:** 
 
 [План работы, первоначальный текст программы в черновике ( можно на отдельном листе) и тесты либо соображения по тестированию] 
+``` :src/111.c
+#include <stdio.h>
+#include <ctype.h>
+#include <math.h>
 
-1.Была изучена теория по структурам в языке Си 
+int to_km (int mi) { 
+    int i = 0;
+    i = round(mi * 1.609);
+    return i;
+}
 
-2.Была написана программа (111.с) и туда запущены примеры из другого файла (о.с) 3.Написание отчёта* 
+typedef enum {
+    OUT,
+    IN_DIGIT,
+    CONTINUE,
+    IN_MAYBE_MILE,
+    IN_MILE
+} state;
+
+
+int main() {
+    state state = OUT;
+    int n = 0;
+    for (int c = getchar(); c != EOF; c = getchar()) {
+        switch (state){
+            case OUT:
+                if (isdigit(c)){
+                    state = IN_DIGIT;
+                    n += (c - '0');
+                } else if ((c == ' ') || (c == '\n')) {
+                    putchar(c);
+                } else {
+                    putchar(c);
+                    state = CONTINUE;
+                }
+                break;
+            case IN_DIGIT:
+                if(isdigit(c)) {
+                    n = n * 10 + (c - '0');
+                } else if(c == 'm') {
+                    state = IN_MAYBE_MILE;
+                } else if((c == ' ') || (c == '\n')) {
+                    printf("%d%c", n, c);
+                    n = 0;
+                    state = OUT;
+                } else {
+                    state = CONTINUE;
+                    printf("%d", n);
+                    n = 0;
+                    putchar(c);
+                }
+                break;
+            case CONTINUE:
+                if ((c == ' ') || (c == '\n')) {
+                    putchar(c);
+                    state = OUT;
+                } else {
+                    putchar(c);
+                }
+                break;
+            case IN_MAYBE_MILE:
+                if (c == 'i') {
+                    state = IN_MILE;
+                } else if((c == ' ') || (c == '\n')) {
+                    printf("%dm%c", n, c);
+                    n = 0;
+                    state = OUT;
+                } else {
+                    printf("%dm", n);
+                    n = 0;
+                    putchar(c);
+                    state = CONTINUE;
+                }
+                break;
+            case IN_MILE:
+                if((c == ' ') || (c == '\n')) {
+                    printf("%dkm%c", to_km(n), c);
+                    n = 0;
+                    state = OUT;
+                } else {
+                    state = CONTINUE;
+                    printf("%dmi", n);
+                    n = 0;
+                    putchar(c);
+                }
+                break;
+        }
+    }
+    return 0;
+}
+```
 
 8. **Распечатка протокола**  
 
 Подклеить  листинг  окончательного  варианта  программы  с  тестовыми  примерами, подписанный преподавателем. 
 ```
-ann@ann:~$ cat 111.c #include <stdio.h> #include <ctype.h> #include <math.h> 
-
-int to\_km (int mi) {  
-
-`    `int i = 0; 
-
-`    `i = round(mi \* 1.609);     return i; 
-
-} 
-
-typedef enum { 
-
-`    `OUT, 
-
-`    `IN\_DIGIT, 
-
-`    `CONTINUE, 
-
-`    `IN\_MAYBE\_MILE,     IN\_MILE 
-
-} state; 
-
-int main() { 
-
-`    `state state = OUT; 
-
-`    `int n = 0; 
-
-`    `for (int c = getchar(); c != EOF; c = getchar()) {         switch (state){ 
-
-`            `case OUT: 
-
-`                `if (isdigit(c)){ 
-
-`                    `state = IN\_DIGIT; 
-
-`                    `n += (c - '0'); 
-
-`                `} else if ((c == ' ') || (c == '\n')) { 
-
-`                    `putchar(c); 
-
-`                `} else { 
-
-`                    `putchar(c); 
-
-`                    `state = CONTINUE; 
-
-`                `} 
-
-`                `break; 
-
-`            `case IN\_DIGIT: 
-
-`                `if(isdigit(c)) { 
-
-`                    `n = n \* 10 + (c - '0'); 
-
-`                `} else if(c == 'm') { 
-
-`                    `state = IN\_MAYBE\_MILE; 
-
-`                `} else if((c == ' ') || (c == '\n')) { 
-
-`                    `printf("%d%c", n, c); 
-
-`                    `n = 0; 
-
-`                    `state = OUT; 
-
-`                `} else { 
-
-`                    `state = CONTINUE; 
-
-`                    `printf("%d", n); 
-
-`                    `n = 0; 
-
-`                    `putchar(c); 
-
-`                `} 
-
-`                `break; 
-
-`            `case CONTINUE: 
-
-`                `if ((c == ' ') || (c == '\n')) { 
-
-`                    `putchar(c); 
-
-`                    `state = OUT; 
-
-`                `} else { 
-
-`                    `putchar(c); 
-
-`                `} 
-
-`                `break; 
-
-`            `case IN\_MAYBE\_MILE: 
-
-`                `if (c == 'i') { 
-
-`                    `state = IN\_MILE; 
-
-`                `} else if((c == ' ') || (c == '\n')) { 
-
-`                    `printf("%dm%c", n, c); 
-
-`                    `n = 0; 
-
-`                    `state = OUT; 
-
-`                `} else { 
-
-`                    `printf("%dm", n); 
-
-`                    `n = 0; 
-
-`                    `putchar(c); 
-
-`                    `state = CONTINUE; 
-
-`                `} 
-
-`                `break; 
-
-`            `case IN\_MILE: 
-
-`                `if((c == ' ') || (c == '\n')) { 
-
-`                    `printf("%dkm%c", to\_km(n), c);                     n = 0; 
-
-`                    `state = OUT; 
-
-`                `} else { 
-
-`                    `state = CONTINUE;                     printf("%dmi", n); 
-
-`                    `n = 0; 
-
-`                    `putchar(c); 
-
-`                `} 
-
-`                `break; 
-
-`        `} 
-
-`    `} 
-
-`    `return 0; 
-
-} 
-
 ann@ann:~$ cat o.c 
 
 123456mi 567 dfghjfgh 8mimi 678mimimi 123474mi fgvbndf 56mi $%&% % ki 9mi 21kilom 0mi -9mi ann@ann:~$ gcc -std=c99 -Wall -pedantic 111.c -lm ann@ann:~$ ./a.out < o.c 
@@ -222,7 +153,7 @@ ann@ann:~$ cat o.c
 
 
 10. **Замечания автора по существу работы:** 
-10. **Выводы:** 
+11. **Выводы:** 
 
 Благодаря лабораторной работе были изучены структуры в языке Си. По сути они заменяют огромное количество условий (if else) и помогают разбить программу на некоторые отдельные части, из-за чего гораздо удобнее воспринимать код программы.  
 
