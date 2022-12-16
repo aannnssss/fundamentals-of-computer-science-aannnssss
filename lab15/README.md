@@ -46,51 +46,9 @@
 7. **Сценарий выполнения работы:** 
 
 [План работы, первоначальный текст программы в черновике ( можно на отдельном листе) и тесты либо соображения по тестированию] 
-``` :src/15.c
-#include <stdio.h>
 
-enum {maxn = 8};
+https://github.com/mai-806-1st-year/fundamentals-of-computer-science-aannnssss/blob/b900f5c5b636f54db98e89e4ac59410a1a92ee06/lab15/15.c#L1-L43
 
-void input(int n, int (*m)[n]);
-void process(int n, int (*m)[n]);
-
-int main() {
-    int m[maxn][maxn];
-    int n;
-    scanf("%d",&n);
-    input(n, (int (*)[n]) m);
-    printf("\n");
-    process(n, (int (*)[n]) m);
-    return 0;
-}
-void input(int n, int (*m)[n]) {    
-    for (int i = 0; i != n; i += 1) {
-        for (int j = 0; j != n; j += 1) 
-            scanf("%d", &m[i][j]); 
-    }
-}
-
-void process (int n, int (*m)[n]) {
-    int i = 0, j = 0, maxelem = -10000000;
-    while (n > i) {
-        while (j < n) {
-            if ((m[i][j]) > maxelem) {
-                maxelem = m[i][j];
-                j += 1; 
-            } else 
-                j += 1;
-        }
-        j = i;
-        m[i][j] = maxelem;
-        for (int j = 0; j < n; j += 1) 
-            printf("%d ", m[i][j]);
-        printf("\n");
-        maxelem = -10000000;
-        i += 1;
-        j = 0;
-    }
-}   
-```
 8. **Распечатка протокола**  
 
 Подклеить  листинг  окончательного  варианта  программы  с  тестовыми  примерами, подписанный преподавателем. 
@@ -159,7 +117,7 @@ ann@ann:~$ ./a.out
 
 
 10. **Замечания автора по существу работы:** 
-10. **Выводы:** 
+11. **Выводы:** 
 
 Была изучена тема матриц в языке Си. Были получены навыки по вводу квадратных матриц и печати в строку всех ее элементов в заданном порядке.  
 
