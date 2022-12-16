@@ -47,68 +47,9 @@
 7. **Сценарий выполнения работы:** 
 
 [План работы, первоначальный текст программы в черновике ( можно на отдельном листе) и тесты либо соображения по тестированию] 
-``` :src/13.c
-#include <stdio.h>
-#include <stdbool.h>
-#include <ctype.h>
 
-typedef unsigned int uint;
-#define VOWELS (1u << ('a' - 'a') | 1u << ('e' - 'a') | 1u << ('i' - 'a') | 1u << ('u' - 'a') | 1u << ('y' - 'a') | 1u << ('o' - 'a'))
+https://github.com/mai-806-1st-year/fundamentals-of-computer-science-aannnssss/blob/705dc38077cfc1a291a61c7406bcf813fda625ab/lab13/13.c#L1-L67
 
-typedef enum{
-    OUT,
-    IN
-}State;
-
-uint char_to_set(char c) {
-
-    c = tolower(c);
-    if(c < 'a' || c > 'z')
-        return 0;
-    else 
-        return 1u << (c-'a'); }
-
-bool check(uint n) {
-    if (n > 0 && (n & (n - 1)) == 0)
-        return true;
-    return false; }
-
-bool process() {
-    State state = OUT;
-    uint word_set = 0;
-    bool result = false;
-    for (int ch = getchar(); ch != EOF; ch = getchar()) {
-        switch (state) {
-            case OUT:
-                if (isspace(ch) || ch == ',') 
-                    continue;
-                else 
-                    state = IN;
-            case IN:
-                if (isspace(ch) || ch == ',') {
-               
-                    state = OUT;
-                    word_set = word_set&VOWELS;
-                    result = result || check(word_set);
-                    continue; }
-                    
-                else if (isalpha(ch)) {
-                        word_set = word_set | char_to_set(ch);
-                        continue; }
-        }
-    }
-    return result;
-}
-
-int main() {
-    if (process()) 
-        printf("YES");
-    else
-        printf("NO");
-    printf("\n");
-    return 0;
-}
-```
 8. **Распечатка протокола**  
 
 Подклеить  листинг  окончательного  варианта  программы  с  тестовыми  примерами, подписанный преподавателем. 
