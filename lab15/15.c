@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <limits.h>
 
 enum {maxn = 8};
 
@@ -22,7 +23,7 @@ void input(int n, int (*m)[n]) {
 }
 
 void process (int n, int (*m)[n]) {
-    int i = 0, j = 0, maxelem = -10000000;
+    int i = 0, j = 0, maxelem = INT_MIN;
     while (n > i) {
         while (j < n) {
             if ((m[i][j]) > maxelem) {
