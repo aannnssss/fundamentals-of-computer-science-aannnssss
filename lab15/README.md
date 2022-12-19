@@ -47,7 +47,7 @@
 
 [План работы, первоначальный текст программы в черновике ( можно на отдельном листе) и тесты либо соображения по тестированию] 
 
-https://github.com/mai-806-1st-year/fundamentals-of-computer-science-aannnssss/blob/b900f5c5b636f54db98e89e4ac59410a1a92ee06/lab15/15.c#L1-L43
+https://github.com/mai-806-1st-year/fundamentals-of-computer-science-aannnssss/blob/09990cc29408e7d1bb7048a58fd552c94514141d/lab15/15.c#L1-L44
 
 8. **Распечатка протокола**  
 
