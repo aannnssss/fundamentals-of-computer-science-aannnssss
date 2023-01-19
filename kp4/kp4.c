@@ -99,22 +99,22 @@ void result(ldbl d, ldbl i, ldbl n) {
 }
 
 int main() {
-    ldbl a2 = 0, b2 = 0.85;
-    ldbl a3 = 1, b3 = 2;
+    ldbl a19 = 0, b19 = 0.85;
+    ldbl a20 = 1, b20 = 2;
     ldbl abs_epsilon = machine_epsilon();
     ldbl otn_epsilon = sqrt(abs_epsilon);
-    ldbl d1 = dichotomya(F19, a2, b2, otn_epsilon, abs_epsilon);
-    ldbl i1 = iteration(f19, f19_first_derivative, a2, b2, otn_epsilon, abs_epsilon);
-    ldbl n1 = newton(F19, F19_first_derivative, F19_second_derivative, a2, b2, otn_epsilon, abs_epsilon);
+    ldbl d19 = dichotomya(F19, a19, b19, otn_epsilon, abs_epsilon);
+    ldbl i19 = iteration(f19, f19_first_derivative, a19, b19, otn_epsilon, abs_epsilon);
+    ldbl n19 = newton(F19, F19_first_derivative, F19_second_derivative, a19, b19, otn_epsilon, abs_epsilon);
     printf("Machine epsilon is %.40Lf\n", abs_epsilon);
     printf("Function 19 var: x - 1/(3+sin(3.6x))\n");
-    result(d1, i1, n1);
+    result(d19, i19, n19);
     printf("\n");
-    ldbl d2 = dichotomya(F20, a3, b3, otn_epsilon, abs_epsilon);
-    ldbl i2 = iteration(f20, f20_first_derivative, a3, b3, otn_epsilon, abs_epsilon);
-    ldbl n2 = newton(F20, F20_first_derivative, F20_second_derivative, a3, b3, otn_epsilon, abs_epsilon);
+    ldbl d20 = dichotomya(F20, a20, b20, otn_epsilon, abs_epsilon);
+    ldbl i20 = iteration(f20, f20_first_derivative, a20, b20, otn_epsilon, abs_epsilon);
+    ldbl n20 = newton(F20, F20_first_derivative, F20_second_derivative, a20, b20, otn_epsilon, abs_epsilon);
     printf("Function 20 var: 0.1*x^2-x*ln(x)\n");
-    result(d2, i2, n2);
+    result(d20, i20, n20);
     return 0;
 }
 
