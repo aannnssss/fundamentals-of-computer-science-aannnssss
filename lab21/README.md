@@ -59,6 +59,8 @@
 ## 7. Сценарий выполнения работы [план работы, первоначальный текст программы в черновике (можно на отдельном листе) и тесты либо соображения по тестированию].
 
 ```
+https://github.com/mai-806-1st-year/fundamentals-of-computer-science-aannnssss/blob/master/lab21/21.py
+https://github.com/mai-806-1st-year/fundamentals-of-computer-science-aannnssss/blob/master/lab21/21.sh
 ```
 Пункты 1-7 отчета составляются сторого до начала лабораторной работы.
 Допущен к выполнению работы.  
