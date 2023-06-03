@@ -196,6 +196,30 @@ bool listIteratorErase(ListIterator *iterator) {
     return true;
 }
 
+bool listIteratorNext(ListIterator *iterator) {
+    List * const list = iterator->list;
+    const ptrdiff_t index = iterator->index;
+    assert(index >= -1 && index < listSize(list));
+    if (iterator->index == -1)
+        return false;
+    iterator->index = list->data[index].next;
+    return true;
+}
+
+bool listIteratorPrev(ListIterator *iterator) {
+    List * const list = iterator->list;
+    const ptrdiff_t index = iterator->index;
+    assert(index >= -1 && index < listSize(list));
+    if (iterator->index == -1) {
+        if (listIsEmpty(list))
+            return false;
+        iterator->index = list->tail;
+        return true;
+    }
+    iterator->index = list->data[index].prev;
+    return true;
+}
+
 static void listUnlink(List * const list, const size_t index) {
     assert(index < list->size);
     Node * const node = list->data + index;
