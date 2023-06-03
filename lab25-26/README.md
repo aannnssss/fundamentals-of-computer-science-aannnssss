@@ -146,11 +146,18 @@ Finished
 
 ## 10. Замечания автора по существу работы 
 
-Защита :(div4)
-<b> https://codeforces.com/contest/1829/submission/204824992
-<b> https://codeforces.com/contest/1829/submission/204828315
-<b> https://codeforces.com/contest/1829/submission/204888698
-<b> https://codeforces.com/contest/1829/submission/205356893
+<b>Защита 25:</b>(div4 and div2) 
+<b>online: </b> https://codeforces.com/contest/1829/submission/204824992</b> 
+<b>https://codeforces.com/contest/1829/submission/204828315</b> 
+<b>https://codeforces.com/contest/1829/submission/204888698</b> 
+<b>https://codeforces.com/contest/1829/submission/205356893</b> 
+<b>https://codeforces.com/contest/1825/submission/205357063</b> 
+
+<b>Защита 26:(div2 and div4)</b> 
+<b>https://codeforces.com/contest/1825/submission/205094891</b> 
+<b>https://codeforces.com/contest/1825/submission/205364498</b> 
+<b>https://codeforces.com/contest/1807/submission/205364724</b> 
+	
 
 ## 11. Выводы
 
