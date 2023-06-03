@@ -147,7 +147,9 @@ Enter the directory or put ?: /home/ann/Документы
 
 ## 10. Замечания автора по существу работы 
 
-
+<b>div3
+<b>https://codeforces.com/contest/1800/submission/195682978   online
+<b>https://codeforces.com/contest/1800/submission/205357984   дорешка
 
 ## 11. Выводы
 
