@@ -35,21 +35,21 @@ void listDestroy(List * const list) {
 
 
 bool listFront(const List * const list, int * const ptr) {
-    if (list->size == 0)
+    if (listIsEmpty(list))
         return false;
     *ptr = list->data[list->head].value;
     return true;
 }
 
 bool listBack(const List * const list, int * const ptr) {
-    if (list->size == 0)
+    if (listIsEmpty(list))
         return false;
     *ptr = list->data[list->tail].value;
     return true;
 }
 
 bool listPushFront(List * const list, const int value) {
-    if (list->size == MAX_SIZE)
+    if (listIsFull(list))
         return false;
     const ptrdiff_t index = list->size;
     list->data[index] = (Node) {
@@ -57,7 +57,7 @@ bool listPushFront(List * const list, const int value) {
         .next = list->head,
         .value = value
     };
-    if (list->size == 0)
+    if (listIsEmpty(list))
         list->tail = index;
     else
         list->data[list->head].prev = index;
@@ -67,7 +67,7 @@ bool listPushFront(List * const list, const int value) {
 }
 
 bool listPushBack(List * const list, const int value) {
-    if (list->size == MAX_SIZE)
+    if (listIsFull(list))
         return false;
     const ptrdiff_t index = list->size;
         list->data[index] = (Node) {
@@ -75,7 +75,7 @@ bool listPushBack(List * const list, const int value) {
         .next = -1,
         .value = value
     };
-    if (list->size == 0)
+    if (listIsEmpty(list))
         list->head = index;
     else
         list->data[list->tail].next = index;
@@ -85,14 +85,14 @@ bool listPushBack(List * const list, const int value) {
 }
 
 bool listPopFront(List * const list) {
-    if (list->size == 0)
+    if (listIsEmpty(list))
         return false;
     listUnlink(list, list->head);
     return true;
 }
 
 bool listPopBack(List * const list) {
-    if (list->size == 0)
+    if (listIsEmpty(list))
         return false;
     listUnlink(list, list->tail);
     return true;

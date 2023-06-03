@@ -61,4 +61,8 @@ bool listIteratorInsert(ListIterator *iterator, int value); // before
 // iterator invalidates if list is changed
 bool listIteratorErase(ListIterator *iterator); // iterator becomes next
 
+bool listIteratorNext(ListIterator *iterator);
+
+bool listIteratorPrev(ListIterator *iterator);
+
 #endif // LIST_H
