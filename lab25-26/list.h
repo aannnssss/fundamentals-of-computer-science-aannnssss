@@ -1,52 +1,64 @@
 #ifndef LIST_H
 #define LIST_H
 
-#include <stdio.h>
-#include <malloc.h>
 #include <stdbool.h>
+#include <stddef.h>
 
-#define MAX_SIZE (100U)
-
-typedef struct {
-    int value;
-    ptrdiff_t prev;
-    ptrdiff_t next;
-} Node;
+typedef struct Node Node;
 
 typedef struct {
-    ptrdiff_t head;
-    ptrdiff_t tail;
-    size_t size;
     Node *data;
+    ptrdiff_t head, tail;
+    size_t size;
 } List;
 
+typedef struct {
+    List *list;
+    ptrdiff_t index;
+} ListIterator;
 
-bool create(List* const list);
+bool listCreate(List *list);
 
-bool pushFront(List * const list, int value);
+void listClear(List *list);
 
-bool pushBack(List * const list, int value);
+void listDestroy(List *list);
 
-bool popFront(List * const list);
+bool listFront(const List *list, int *ptr);
 
-bool popBack(List * const list);
+bool listBack(const List *list, int *ptr);
 
-bool isEmpty(const List * const list);
+bool listPushFront(List *list, int value);
 
-void printList(const List * const list);
+bool listPushBack(List *list, int value);
 
-void printDebugList(const List * const list);
+bool listPopFront(List *list);
 
-size_t listSize(const List * const list) ;
+bool listPopBack(List *list);
 
-void clear(List * const list);
+bool listErase(List *list, int value);
 
-void destroy(List * const list);
+bool listIsEmpty(const List * list);
 
-void unlink(List* const list, const size_t index);
+bool listIsFull(const List * list);
 
-void swapLast(List * const list, const size_t index);
+size_t listSize(const List *list);
 
-bool erase(List * const list, int value);
+void listPrint(const List *list);
+
+void listDebugPrint(const List *list);
+
+ListIterator listIteratorBegin(List *list);
+
+ListIterator listIteratorEnd(List *list);
+
+bool listIteratorGet(const ListIterator *iterator, int *ptr);
+
+bool listIteratorSet(ListIterator *iterator, int value);
+
+// iterator invalidates if list is changed
+bool listIteratorInsert(ListIterator *iterator, int value); // before
+
+// iterator invalidates if list is changed
+bool listIteratorErase(ListIterator *iterator); // iterator becomes next
 
 #endif // LIST_H

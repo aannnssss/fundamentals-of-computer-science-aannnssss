@@ -1,16 +1,21 @@
 #include <assert.h>
+#include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <stdbool.h>
-#include <malloc.h>
-#include <errno.h>
+
 #include "list.h"
-#include "sort.h"
 
 #define MAX_SIZE (100U)
 
-bool create(List* const list) {
-    Node* const ptr = malloc(MAX_SIZE * sizeof(Node));
+struct Node {
+    ptrdiff_t prev, next;
+    int value;
+};
+
+static void listUnlink(List *list, size_t index);
+
+bool listCreate(List * const list) {
+    Node * const ptr = malloc(MAX_SIZE * sizeof(Node));
     if (ptr == NULL)
         return false;
     list->data = ptr;
@@ -19,29 +24,57 @@ bool create(List* const list) {
     return true;
 }
 
-bool pushFront(List * const list, int value) {
+void listClear(List * const list) {
+    list->head = list->tail = -1;
+    list->size = 0;
+}
+
+void listDestroy(List * const list) {
+    free(list->data);
+}
+
+
+bool listFront(const List * const list, int * const ptr) {
+    if (list->size == 0)
+        return false;
+    *ptr = list->data[list->head].value;
+    return true;
+}
+
+bool listBack(const List * const list, int * const ptr) {
+    if (list->size == 0)
+        return false;
+    *ptr = list->data[list->tail].value;
+    return true;
+}
+
+bool listPushFront(List * const list, const int value) {
     if (list->size == MAX_SIZE)
         return false;
     const ptrdiff_t index = list->size;
-    list->data[index].value = value;
-    list->data[index].prev = -1;
-    list->data[index].next = list->head;
-    list->head = index;
+    list->data[index] = (Node) {
+        .prev = -1,
+        .next = list->head,
+        .value = value
+    };
     if (list->size == 0)
         list->tail = index;
     else
         list->data[list->head].prev = index;
+    list->head = index;
     ++list->size;
     return true;
 }
 
-bool pushBack(List * const list, int value) {
+bool listPushBack(List * const list, const int value) {
     if (list->size == MAX_SIZE)
         return false;
     const ptrdiff_t index = list->size;
-    list->data[index].value = value;
-    list->data[index].prev = list->tail;
-    list->data[index].next = -1;
+        list->data[index] = (Node) {
+        .prev = list->tail,
+        .next = -1,
+        .value = value
+    };
     if (list->size == 0)
         list->head = index;
     else
@@ -50,111 +83,142 @@ bool pushBack(List * const list, int value) {
     ++list->size;
     return true;
 }
-bool popFront(List * const list) {
+
+bool listPopFront(List * const list) {
     if (list->size == 0)
         return false;
-    unlink(list, list->head);
+    listUnlink(list, list->head);
     return true;
 }
 
-bool popBack(List * const list) {
+bool listPopBack(List * const list) {
     if (list->size == 0)
         return false;
-    unlink(list, list->tail);
+    listUnlink(list, list->tail);
     return true;
 }
 
-bool isEmpty(const List * const list) {
+bool listErase(List * const list, const int value) {
+    for (ptrdiff_t index = list->head; index >= 0; index = list->data[index].next)
+        if (list->data[index].value == value) {
+            listUnlink(list, index);
+            return true;
+        }
+    return false;
+}
+
+bool listIsEmpty(const List * const list) {
     return list->size == 0;
 }
 
-void printList(const List * const list) {
-    for (ptrdiff_t index = list->head; index != -1; index = list->data[index].next)
-        if (list->data[index].next != -1)
-            printf("%d  ", list->data[index].value);
-        else
-            printf("%d", list->data[index].value);
-}
-
-void printDebugList(const List * const list) {
-    printf("List size: %zu\n", list->size);
-    printf("List head: %zu\n", list->head);
-    printf("List tail: %zu\n", list->tail);
-    printf("List values:\n");
-    for (ptrdiff_t i = 0; i < list->size; i++) {
-        printf("value: %d, prev: %td, next: %td\n", list->data[i].value, list->data[i].prev, list->data[i].next);
-    }
+bool listIsFull(const List * const list) {
+    return list->size == MAX_SIZE;
 }
 
 size_t listSize(const List * const list) {
     return list->size;
 }
 
-void clear(List * const list) {
-    list->head = list->tail = -1;
-    list->size = 0;
+void listPrint(const List * const list) {
+    for (ptrdiff_t index = list->head; index >= 0; index = list->data[index].next)
+        if (list->data[index].next >= 0)
+            printf("%d  ", list->data[index].value);
+        else
+            printf("%d", list->data[index].value);
 }
 
-void destroy(List * const list) {
-    free(list->data);
+void listDebugPrint(const List * const list) {
+    printf("List: { head: %td, tail: %td, size: %zu }\n",
+        list->head, list->tail, list->size
+    );
+    for (size_t i = 0; i < list->size; ++i)
+        printf("Node: { prev: %td, next: %td, value: %d }\n",
+            list->data[i].prev, list->data[i].next, list->data[i].value
+        );
 }
 
-void unlink(List * const list, size_t index) {
-    printf("index: %zu, list->size: %zu\n", index, list->size);
-    swapLast(list, index);
-    index = list->size - 1;
+ListIterator listIteratorBegin(List * const list) {
+    return (ListIterator) { .list = list, .index = list->head };
+}
+
+ListIterator listIteratorEnd(List * const list) {
+    return (ListIterator) { .list = list, .index = -1 };
+}
+
+bool listIteratorGet(const ListIterator *iterator, int *ptr) {
+    const List * const list = iterator->list;
+    const ptrdiff_t index = iterator->index;
+    if (index == -1)
+        return false;
+    *ptr = list->data[index].value;
+    return true;
+}
+
+bool listIteratorSet(ListIterator *iterator, int value) {
+    List * const list = iterator->list;
+    const ptrdiff_t index = iterator->index;
+    if (index == -1)
+        return false;
+    list->data[index].value = value;
+    return true;
+}
+
+bool listIteratorInsert(ListIterator *iterator, const int value) {
+    List * const list = iterator->list;
+    if (listIsFull(list))
+        return false;
+    const ptrdiff_t index = iterator->index;
+    if (index == -1)
+        return listPushBack(list, value);
+    assert(index >= 0 && index < listSize(list));
+    const ptrdiff_t newIndex = list->size, prev = list->data[index].prev;
+    list->data[newIndex] = (Node) {
+        .prev = prev,
+        .next = index,
+        .value = value
+    };
+    if (list->head == index)
+        list->head = newIndex;
+    else
+        list->data[prev].next = newIndex;
+    list->data[index].prev = newIndex;
+    ++list->size;
+    return true;
+}
+
+bool listIteratorErase(ListIterator *iterator) {
+    List * const list = iterator->list;
+    const ptrdiff_t index = iterator->index;
+    if (index == -1 || listIsEmpty(list))
+        return false;
+    iterator->index = list->data[index].next;
+    listUnlink(list, index);
+    return true;
+}
+
+static void listUnlink(List * const list, const size_t index) {
+    assert(index < list->size);
     Node * const node = list->data + index;
     if (list->head == index)
         list->head = node->next;
     else
         list->data[node->prev].next = node->next;
-
     if (list->tail == index)
         list->tail = node->prev;
     else
         list->data[node->next].prev = node->prev;
     --list->size;
-}
 
-void swapLast(List * const list, const size_t index) {
-    assert(index < list->size);
-    const size_t lastIndex = list->size - 1;
-    if (index >= lastIndex)
+    const size_t last = list->size;
+    if (index == last)
         return;
-    Node * const last = list->data + lastIndex,
-        * const byIndex = list->data + index;
-    const Node tmp = *byIndex;
-    *byIndex = *last;
-    *last = tmp;
-
-    if (list->head == index) {
-        list->head = lastIndex;
-        list->data[byIndex->prev].next = index;
-    } else if (list->head == lastIndex) {
+    *node = list->data[last];
+    if (list->head == last)
         list->head = index;
-        list->data[last->prev].next = lastIndex;
-    } else {
-        list->data[byIndex->prev].next = index;
-        list->data[last->prev].next = lastIndex;
-    }
-
-    if (list->tail == index) {
-        list->tail = lastIndex;
-        list->data[byIndex->next].prev = index;
-    } else if (list->tail == lastIndex) {
+    else
+        list->data[node->prev].next = index;
+    if (list->tail == last)
         list->tail = index;
-        list->data[last->next].prev = lastIndex;
-    } else {
-        list->data[byIndex->next].prev = index;
-        list->data[last->next].prev = lastIndex;
-    }
-
-}
-bool erase(List * const list, int value) {
-    for (ptrdiff_t index = list->head; index != -1; index = list->data[index].next)
-        if (list->data[index].value == value) {
-            unlink(list, index);
-            return true;
-        }
-    return false;
+    else
+        list->data[node->next].prev = index;
 }

@@ -1,84 +1,79 @@
+#include <stdbool.h>
+#include <stddef.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <stdbool.h>
-#include <malloc.h>
-#include <errno.h>
+
 #include "sort.h"
 #include "list.h"
 
-
-int main() {
+int main(void) {
     List list;
-    create(&list);
-    
-    int value, n;
+    listCreate(&list);
+
     printf("Creating list. Enter the size: ");
+    ptrdiff_t n;
     scanf("%d", &n);
     printf("Enter the list: ");
-    while (n > 0) {
+    for (; n > 0; --n) {
+        int value;
         scanf("%d", &value);
-        pushBack(&list, value);
-        n -= 1;
+        listPushBack(&list, value);
     }
-    int number = -1, t = 1;
-    printf("\n1. pushBack;\n2. pushFront;\n3. popBack;\n4. popFront;\n5. Erase;\n6. Destroy;\n7. Clear;\n8. Size;\n9. Sorting by simple insertion;\n10. Check if the list is empty;\n11. Print list;\n12. DebugList\n0. Quit.\n");
-    while (t) {
+
+    printf("\n1. pushBack;\n2. pushFront;\n3. popBack;\n4. popFront;\n5. erase;\n6. destroy;\n7. clear;\n8. size;\n9. Sorting by simple insertion;\n10. Check if the list is empty;\n11. Print list;\n12. Print list debug;\n0. Quit.\n");
+    for (bool flag = true; flag; ) {
+        int value, number = -1;
         printf("Enter the number: ");
         scanf("%d", &number);
-        if (number == 1) {  
-            printf("Enter the node value: ");
-            scanf("%d", &value);
-            pushBack(&list, value);
-        }
-        else if (number == 2) {
-            printf("Enter the node value: ");
-            scanf("%d", &value);
-            pushFront(&list, value);
-        }
-        else if (number == 3) {
-            popBack(&list);
-        }
-        else if (number == 4) {
-            popFront(&list);
-        }
-        else if (number == 5) {
-            printf("Enter the node value: ");
-            scanf("%d", &value);
-            erase(&list, value);
-        }
-        else if (number == 6) {
-            destroy(&list);
-        }
-        else if (number == 7) {
-            clear(&list);
-        }
-        else if (number == 8) {
-            size_t size = listSize(&list);
-            printf("List size = %zu\n", size);
-        }
-        else if (number == 9) {
-            sort(&list);
-            printf("Sorting by simple insertion completed\n");
-        }
-        else if (number == 10) {
-            bool empty = isEmpty(&list);
-            if (empty) {
-                printf("The list is not empty\n");
-            }
-            else {
-                printf("The list is empty\n");
-            }
-        } else if (number == 11) {
-            printList(&list);
-            printf("\n");
-            
-        } else if (number == 12) {
-            printDebugList(&list);
-            printf("\n");   
-         
-        } else if (number == 0) {
-            printf("Finished\n");
-            t = 0;
+        switch (number) {
+            case 1:
+                printf("Enter the node value: ");
+                scanf("%d", &value);
+                listPushBack(&list, value);
+                break;
+            case 2:
+                printf("Enter the node value: ");
+                scanf("%d", &value);
+                listPushFront(&list, value);
+                break;
+            case 3:
+                listPopBack(&list);
+                break;
+            case 4:
+                listPopFront(&list);
+                break;
+            case 5:
+                printf("Enter the node value: ");
+                scanf("%d", &value);
+                listErase(&list, value);
+                break;
+            case 6:
+                listDestroy(&list);
+                break;
+            case 7:
+                listClear(&list);
+                break;
+            case 8:
+                printf("List size = %zu\n", listSize(&list));
+                break;
+            case 9:
+                sort(&list);
+                printf("Sorting by simple insertion completed\n");
+                break;
+            case 10:
+                printf("The list is%s empty\n", listIsEmpty(&list) ? "" : " not");
+                break;
+            case 11:
+                listPrint(&list);
+                printf("\n");
+                break;
+            case 12:
+                listDebugPrint(&list);
+                break;
+            case 0:
+                printf("Finished\n");
+                flag = false;
+                break;
         }
     }
     return 0;
