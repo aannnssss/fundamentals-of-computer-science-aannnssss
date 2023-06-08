@@ -8,14 +8,18 @@ typedef struct Node Node;
 
 typedef struct {
     Node *data;
-    ptrdiff_t head, tail;
-    size_t size;
+    ptrdiff_t head, tail, size;
 } List;
 
 typedef struct {
     List *list;
     ptrdiff_t index;
 } ListIterator;
+
+struct Node {
+    ptrdiff_t prev, next;
+    int value;
+};
 
 bool listCreate(List *list);
 
@@ -41,11 +45,13 @@ bool listIsEmpty(const List * list);
 
 bool listIsFull(const List * list);
 
-size_t listSize(const List *list);
+ptrdiff_t listSize(const List *list);
 
 void listPrint(const List *list);
 
 void listDebugPrint(const List *list);
+
+void insertBeforeElement(List * list, Node * elm, int value);
 
 ListIterator listIteratorBegin(List *list);
 
@@ -56,7 +62,7 @@ bool listIteratorGet(const ListIterator *iterator, int *ptr);
 bool listIteratorSet(ListIterator *iterator, int value);
 
 // iterator invalidates if list is changed
-bool listIteratorInsert(ListIterator *iterator, int value); // before
+bool listIteratorInsert(ListIterator *iterator, int value); // before, but must be after
 
 // iterator invalidates if list is changed
 bool listIteratorErase(ListIterator *iterator); // iterator becomes next
@@ -64,5 +70,7 @@ bool listIteratorErase(ListIterator *iterator); // iterator becomes next
 bool listIteratorNext(ListIterator *iterator);
 
 bool listIteratorPrev(ListIterator *iterator);
+
+static void listUnlink(List *list, size_t index);
 
 #endif // LIST_H

@@ -7,13 +7,6 @@
 
 #define MAX_SIZE (100U)
 
-struct Node {
-    ptrdiff_t prev, next;
-    int value;
-};
-
-static void listUnlink(List *list, size_t index);
-
 bool listCreate(List * const list) {
     Node * const ptr = malloc(MAX_SIZE * sizeof(Node));
     if (ptr == NULL)
@@ -29,7 +22,7 @@ void listClear(List * const list) {
     list->size = 0;
 }
 
-void listDestroy(List * const list) {
+void listDestroy(List * const list) { //only clearning values
     free(list->data);
 }
 
@@ -115,7 +108,7 @@ bool listIsFull(const List * const list) {
     return list->size == MAX_SIZE;
 }
 
-size_t listSize(const List * const list) {
+ptrdiff_t listSize(const List * const list) {
     return list->size;
 }
 
@@ -124,14 +117,14 @@ void listPrint(const List * const list) {
         if (list->data[index].next >= 0)
             printf("%d  ", list->data[index].value);
         else
-            printf("%d", list->data[index].value);
+            printf("%d\n", list->data[index].value);
 }
 
 void listDebugPrint(const List * const list) {
-    printf("List: { head: %td, tail: %td, size: %zu }\n",
+    printf("List: { head: %td, tail: %td, size: %td }\n",
         list->head, list->tail, list->size
     );
-    for (size_t i = 0; i < list->size; ++i)
+    for (ptrdiff_t i = 0; i < list->size; ++i)
         printf("Node: { prev: %td, next: %td, value: %d }\n",
             list->data[i].prev, list->data[i].next, list->data[i].value
         );
@@ -165,23 +158,24 @@ bool listIteratorSet(ListIterator *iterator, int value) {
 
 bool listIteratorInsert(ListIterator *iterator, const int value) {
     List * const list = iterator->list;
-    if (listIsFull(list))
+    if (listIsFull(list)) {
         return false;
+    }
     const ptrdiff_t index = iterator->index;
-    if (index == -1)
+    if (index == -1) {
         return listPushBack(list, value);
+    }
     assert(index >= 0 && index < listSize(list));
-    const ptrdiff_t newIndex = list->size, prev = list->data[index].prev;
+    const ptrdiff_t next = list->data[index].next, newIndex = listSize(list);
     list->data[newIndex] = (Node) {
-        .prev = prev,
-        .next = index,
+        .prev = index,
+        .next = next,
         .value = value
     };
-    if (list->head == index)
-        list->head = newIndex;
-    else
-        list->data[prev].next = newIndex;
-    list->data[index].prev = newIndex;
+    if (list->tail == index)
+        list->tail = newIndex;
+    list->data[next].prev = newIndex;
+    list->data[index].next = newIndex;
     ++list->size;
     return true;
 }
@@ -209,6 +203,7 @@ bool listIteratorNext(ListIterator *iterator) {
 bool listIteratorPrev(ListIterator *iterator) {
     List * const list = iterator->list;
     const ptrdiff_t index = iterator->index;
+    
     assert(index >= -1 && index < listSize(list));
     if (iterator->index == -1) {
         if (listIsEmpty(list))
@@ -233,7 +228,7 @@ static void listUnlink(List * const list, const size_t index) {
         list->data[node->next].prev = node->prev;
     --list->size;
 
-    const size_t last = list->size;
+    const ptrdiff_t last = list->size;
     if (index == last)
         return;
     *node = list->data[last];

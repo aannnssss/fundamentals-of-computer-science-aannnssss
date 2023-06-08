@@ -12,7 +12,7 @@ int main(void) {
 
     printf("Creating list. Enter the size: ");
     ptrdiff_t n;
-    scanf("%d", &n);
+    scanf("%td", &n);
     printf("Enter the list: ");
     for (; n > 0; --n) {
         int value;
@@ -54,11 +54,10 @@ int main(void) {
                 listClear(&list);
                 break;
             case 8:
-                printf("List size = %zu\n", listSize(&list));
+                printf("List size = %td\n", listSize(&list));
                 break;
             case 9:
-                sort(&list);
-                printf("Sorting by simple insertion completed\n");
+                printf("Sorting by simple insertion completed: %d\n", sort(&list));
                 break;
             case 10:
                 printf("The list is%s empty\n", listIsEmpty(&list) ? "" : " not");
