@@ -60,7 +60,7 @@ int main(void) {
                 printf("Sorting by simple insertion completed: %d\n", sort(&list));
                 break;
             case 10:
-                printf("The list is%s empty\n", listIsEmpty(&list) ? "" : " not");
+                printf("The list is%s empty\n", listIsEmpty(&list) ? " not" : "");
                 break;
             case 11:
                 listPrint(&list);
