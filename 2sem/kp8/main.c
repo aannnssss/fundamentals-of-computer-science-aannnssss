@@ -30,7 +30,7 @@ int main() {
                 listPopFront(list);
                 break;
             case 5:
-                printf("Size = %d\n", listSize(list));
+                printf("Size = %td\n", listSize(list));
                 break;
             case 6:
                 printf("Input k: ");

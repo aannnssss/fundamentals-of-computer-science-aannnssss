@@ -22,19 +22,19 @@ typedef struct listIterator {
 
 List* listCreate();
 
-Node* nodeCreate(int data);
+bool nodeCreate(int data, Node** node);
 
-void listPushFront(List* list, int data);
+bool listPushFront(List* list, int data);
 
-void listPushBack(List* list, int data);
+bool listPushBack(List* list, int data);
 
 bool listIsEmpty(List *list);
 
-void listPopFront(List* list);
+bool listPopFront(List* list);
 
-void listPopBack(List* list);
+bool listPopBack(List* list);
 
-int listSize(List* list);
+ptrdiff_t listSize(List* list);
 
 ListIterator listIteratorBegin(const List * const list);
 
@@ -42,13 +42,13 @@ ListIterator listIteratorEnd(const List * const list);
 
 ListIterator *listIteratorNext(ListIterator * const it);
 
-void listPrint(List *list);
+bool listPrint(List *list);
 
-void nodeInsert(List *list, int index, int value);
+bool nodeInsert(List *list, int index, int value);
 
-void nodeDelete(List *list, int index);
+bool nodeDelete(List *list, int index);
 
-Node* nodeGet(List* list, int index);
+bool nodeGet(Node** node, List* list, int index);
 
 void Swap(List *list, int k);
 

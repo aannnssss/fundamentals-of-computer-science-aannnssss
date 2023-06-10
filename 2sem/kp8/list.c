@@ -12,16 +12,22 @@ List* listCreate() {
     return list;
 }
 
-Node* nodeCreate(int data) {
-    Node* node = malloc(sizeof(Node));
-    node->data = data;
-    node->prev = NULL;
-    node->next = NULL;
-    return node;
+bool nodeCreate(int data, Node** node) { 
+    *node = malloc(sizeof(Node)); 
+    if (*node == NULL) {
+        return false; 
+    }
+    (*node)->data = data; 
+    (*node)->prev = NULL; 
+    (*node)->next = NULL; 
+    return true;
 }
 
-void listPushFront(List* list, int data) {
-    Node* node = nodeCreate(data);
+bool listPushFront(List* list, int data) {
+    Node* node;
+    if (!nodeCreate(data, &node)) {
+        return false;
+    }
     if (list->size == 0) {
         list->head = node;
         node->next = node;
@@ -36,10 +42,14 @@ void listPushFront(List* list, int data) {
         list->head = node;
     }
     list->size++;
+    return true;
 }
 
-void listPushBack(List* list, int data) {
-    Node* node = nodeCreate(data);
+bool listPushBack(List* list, int data) {
+    Node* node;
+    if (!nodeCreate(data, &node)) {
+        return false;
+    }
     if (list->size == 0) {
         list->head = node;
         node->next = node;
@@ -59,10 +69,9 @@ bool listIsEmpty(List *list) {
     return list->size == 0;
 }
 
-void listPopFront(List* list) {
+bool listPopFront(List* list) {
     if (listIsEmpty(list)) {
-        printf("List is not empty\n");
-        return;
+        return false;
     }
     Node* head = list->head;
     Node* tail = head->prev;
@@ -76,12 +85,12 @@ void listPopFront(List* list) {
     }
     free(head);
     list->size--;
+    return true;
 }
 
-void listPopBack(List* list) {
+bool listPopBack(List* list) {
     if (listIsEmpty(list)) {
-        printf("List is not empty\n");
-        return;
+        return false;
     }
     Node* head = list->head;
     Node* tail = head->prev;
@@ -94,9 +103,10 @@ void listPopBack(List* list) {
     }
     free(tail);
     list->size--;
+    return true;
 }
 
-int listSize(List* list) {
+ptrdiff_t listSize(List* list) {
     return list->size;
 }
 
@@ -113,10 +123,10 @@ ListIterator *listIteratorNext(ListIterator * const it) {
     return it;
 }
  
-void listPrint(List *list) {
+bool listPrint(List *list) {
     if (listIsEmpty(list)) {
         printf("List is not empty\n");
-        return;
+        return false;
     }
     ListIterator it = listIteratorBegin(list);
     ListIterator end = listIteratorEnd(list);
@@ -126,14 +136,18 @@ void listPrint(List *list) {
             break; 
     }
     printf("\n"); 
+    return true;
 }
 
-void nodeInsert(List *list, int index, int value) {  
+bool nodeInsert(List *list, int index, int value) {  
     if (index < 0 || index > list->size) {
         printf("Index out of range\n");
-        return;
+        return false;
     }
-    Node *new_node = nodeCreate(value);
+    Node* new_node;
+    if (!nodeCreate(value, &new_node)) {
+        return false;
+    }
     if (list->head == NULL) {
         list->head = new_node;
         new_node->prev = new_node;
@@ -156,15 +170,16 @@ void nodeInsert(List *list, int index, int value) {
         new_node->prev = current;
     }
     list->size++;
+    return true;
 }
 
-void nodeDelete(List *list, int index) { 
+bool nodeDelete(List *list, int index) { 
     if (index < 0 || index >= list->size) {
         printf("Index out of range\n");
-        return;
+        return false;
     }
     if (list->head == NULL) {
-        return;
+        return false;
     }
     if (list->size == 1) {
         free(list->head);
@@ -186,33 +201,35 @@ void nodeDelete(List *list, int index) {
         free(current);
     }
     list->size--;
+    return true;
 }
 
-Node* nodeGet(List* list, int index) {
+bool nodeGet(Node** node, List* list, int index) {
     if (index < 0 || index >= list->size) {
         printf("Index out of range\n");
-        return NULL;
+        return false;
     }
     ListIterator it = listIteratorBegin(list);
     ListIterator end = listIteratorEnd(list);
     int i = 0;
     for(; i < index && it.node != end.node; listIteratorNext(&it), i++);
-    return it.node;
+    *node=it.node;
+    return true;
 }
 
 void Swap(List *list, int k) {
     Node *first, *second;
     if (k == 0) {
-        first = nodeGet(list, 1);
-		second = nodeGet(list, list->size - 1);
+        nodeGet(&first, list, 1);
+        nodeGet(&second, list, list->size - 1);
     } else if (k == list->size - 1) {
-        first = nodeGet(list, 0);
-		second = nodeGet(list, list->size - 2);
+        nodeGet(&first, list, 0);
+	nodeGet(&second, list, list->size - 2);
     } else {
-		first = nodeGet(list, k - 1);
-		second = nodeGet(list, k + 1);
+	nodeGet(&first, list, k - 1);
+	nodeGet(&second, list, k + 1);
     }
-	int temp = first->data;
-	first->data = second->data;
-	second->data = temp;
+    int temp = first->data;
+    first->data = second->data;
+    second->data = temp;
 }
