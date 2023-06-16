@@ -12,9 +12,9 @@ typedef struct {
     char initials[2];
     char gender;
     uint school_number;
-    char medal; //0 - NO, 1 - YES
+    bool medal;
     uint marks;
-    char essay; //0 - NO, 1 - YES
+    bool essay;
 } Person;
 #endif //PERSON_H
 

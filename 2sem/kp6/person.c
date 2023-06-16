@@ -1,5 +1,3 @@
-#include <stdio.h>
-#include <stddef.h>
 #include "person.h"
 
 int main(int argc, char* argv[]){
@@ -20,7 +18,7 @@ int main(int argc, char* argv[]){
     Person person;
     int counter = 0;
     fseek(output, sizeof(int), SEEK_SET);
-    while(fscanf(input, "%[^ ] %2s %c %u %c %u %c\n", person.surname, person.initials, &person.gender, &person.school_number, &person.medal, &person.marks, &person.essay) == 7){
+    while(fscanf(input, "%[^ ] %2s %c %u %d %u %d\n", person.surname, person.initials, &person.gender, &person.school_number, &person.medal, &person.marks, &person.essay) == 7){
         if (fwrite(&person, sizeof(Person), 1, output) != 1){
             fprintf(stderr, "Write error!\n");
             return 1;
@@ -32,7 +30,7 @@ int main(int argc, char* argv[]){
         fprintf(stderr, "Write error!\n");
         return 1;
     }
-	printf("%d lines are written\n", counter);
+    printf("%d lines are written\n", counter);
     fclose(input);
     fclose(output);
     return 0;
