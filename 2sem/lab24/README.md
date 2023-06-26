@@ -225,8 +225,8 @@ ann@ann:~/\u0417\u0430\u0433\u0440\u0443\u0437\u043a\u0438/fundamentals-of-compu
 
 ## 10. Замечания автора по существу работы 
 
-[online div3 881А](https://codeforces.com/contest/1843/submission/210418396) 
-[later div3 881B](https://codeforces.com/contest/1843/submission/210735894)
+[online div3 881А](https://codeforces.com/contest/1843/submission/210418396)  
+[later div3 881B](https://codeforces.com/contest/1843/submission/210735894)  
 
 ## 11. Выводы
 
